@@ -16,13 +16,13 @@ public final class App {
      * @param args The arguments of the program.
      */
     public static void main(String[] args) {
-        Mochila mochila = new Mochila(350);
+        Mochila mochila = new Mochila(3500);
         int quantidadeEquivalentes = 0;
 
         Instant inst1 = Instant.now();
         for (int i = 0; i < 500; i++) {
             mochila.resetItens();
-            ArrayList<ItemMochila> itens = ItemMochila.gerarItens(350, 1015, false);
+            ArrayList<ItemMochila> itens = ItemMochila.gerarItens(3500, 1016, false);
 
             System.out.println("Itens disponíveis: \n");
             for (ItemMochila it : itens) {
@@ -60,6 +60,7 @@ public final class App {
 
         System.out.println("Capacidade: " + solucaoFB.getCapacidade());
         System.out.println("Preenchido: " + solucaoFB.getPreenchido());
+        System.out.println("Valor: " + solucaoFB.getItens().stream().map(it -> it.getValor()).reduce(0, (subtotal, it) -> subtotal + it));
 
         return solucaoFB;
     }
@@ -100,22 +101,29 @@ public final class App {
         itens.sort((a, b) -> {
             double mediaA = (a.getValor() / (double) a.getPeso());
             double mediaB = (b.getValor() / (double) b.getPeso());
-    
-            return mediaA >= mediaB ? -1 : 1;
+
+            if (mediaA < mediaB) {
+                return 1;
+            } else if (mediaA > mediaB) {
+                return -1;
+            } else {
+                return 0;
+            }
         });
 
-        Mochila solucaoFB = App.resolverGuloso(mochila, itens, 0);
+        Mochila solucaoGuloso = App.resolverGuloso(mochila, itens, 0);
 
         System.out.println("=============================================");
-        for (ItemMochila it : solucaoFB.getItens()) {
+        for (ItemMochila it : solucaoGuloso.getItens()) {
             System.out.println("Valor: " + it.getValor() + " Peso: " + it.getPeso() + "");
         }
         System.out.println("=============================================");
 
-        System.out.println("Capacidade: " + solucaoFB.getCapacidade());
-        System.out.println("Preenchido: " + solucaoFB.getPreenchido());
+        System.out.println("Capacidade: " + solucaoGuloso.getCapacidade());
+        System.out.println("Preenchido: " + solucaoGuloso.getPreenchido());
+        System.out.println("Valor: " + solucaoGuloso.getItens().stream().map(it -> it.getValor()).reduce(0, (subtotal, it) -> subtotal + it));
 
-        return solucaoFB;
+        return solucaoGuloso;
     }
 
     public static Mochila resolverGuloso(Mochila mochila, ArrayList<ItemMochila> itens, int index) {
