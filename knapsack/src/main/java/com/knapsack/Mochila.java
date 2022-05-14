@@ -12,6 +12,16 @@ public class Mochila {
     this.itens = new ArrayList<ItemMochila>();
   }
 
+  public boolean possuiMesmosItens(Mochila comparacao) {
+    for (ItemMochila it : this.itens) {
+      if (!comparacao.getItens().contains(it)) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
   public boolean adicionarItem(ItemMochila item) {
     if (item.getPeso() > this.getEspacoDisponivel()) {
       return false;
@@ -45,6 +55,11 @@ public class Mochila {
 
   public ArrayList<ItemMochila> getItens() {
     return itens;
+  }
+
+  public void resetItens() {
+    this.itens = new ArrayList<ItemMochila>();
+    this.setPreenchido(0);
   }
 
   public void setItens(ArrayList<ItemMochila> itens) {

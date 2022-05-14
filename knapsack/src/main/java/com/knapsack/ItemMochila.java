@@ -14,10 +14,11 @@ public class ItemMochila {
 
   public static ArrayList<ItemMochila> gerarItens(int pesoMochila, int quantidade, boolean ordenado) {
     Random rand = new Random();
+    int valor = (pesoMochila * 3) / quantidade;
     ArrayList<ItemMochila> itens = new ArrayList<ItemMochila>();
 
     for (int i = 0; i < quantidade; i++) {
-      ItemMochila item = new ItemMochila(rand.nextInt(pesoMochila) + 1, rand.nextInt(pesoMochila) + 1);
+      ItemMochila item = new ItemMochila(rand.nextInt(valor) + 1, rand.nextInt(valor) + 1);
 
       itens.add(item);      
     }
